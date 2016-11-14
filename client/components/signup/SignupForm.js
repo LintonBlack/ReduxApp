@@ -2,22 +2,23 @@ import React from "react";
 import timezones from '../../data/timezones';
 import map from 'lodash/map';
 import classnames from 'classnames';
+//option A : import { browserHistory } from 'react-router';
 
-import TextFieldGroup from '../common/TextFieldGroup';
 
 //[1]//import axios from 'axios';
-
+import TextFieldGroup from '../common/TextFieldGroup';
 import validateInput from '../../../server/shared/validations/signup';
+
 
 
 class SignupForm extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			username:'',
-			email:'',
-			password:'',
-			passwordConfirmation:'',
+			username:'re',
+			email:'re@er.fr',
+			password:'qw',
+			passwordConfirmation:'qw',
 			timeZone:'',
 			errors:{},
 			isLoading: false
@@ -51,7 +52,22 @@ class SignupForm extends React.Component {
 
 		if(this.isValid()) {
 			this.props.userSignupRequest(this.state).then(
-				() => {},
+				//if success
+				() => {
+					
+					// 2 options A use browserHistory
+					//browserHistory.push('/');
+
+					//B use context router					
+					this.props.addFlashMessage({
+						type:'succes',
+						text:'you have signed up successfully, thanks.'
+					});
+
+					this.context.router.push('/');
+
+				},
+				//else
 				({ data }) => this.setState({ errors: data, isLoading:false })
 			);
 		}
@@ -101,7 +117,7 @@ class SignupForm extends React.Component {
 				<TextFieldGroup
 						error = { errors.passwordConfirmation }
 						label="Password Confirmation"
-						value={this.state.password}	
+						value={this.state.passwordConfirmation}	
 						type="password"					
 						onChange={this.onChange}					 
 					 	field="passwordConfirmation"
@@ -129,7 +145,13 @@ class SignupForm extends React.Component {
 	}
 
 SignupForm.propTypes = {
-	userSignupRequest: React.PropTypes.func.isRequired
+	userSignupRequest: React.PropTypes.func.isRequired,
+	addFlashMessage : React.PropTypes.func.isRequired
+}
+
+//context router 
+SignupForm.contextTypes = {
+	router: React.PropTypes.object.isRequired
 }
 
 export default SignupForm;
