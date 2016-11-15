@@ -10,7 +10,7 @@ import validateInput from '../../../server/shared/validations/login';
 
 
 import { connect } from 'react-redux';
-import { login } from '../../actions/loginActions';
+import { login } from '../../actions/authActions';
 
 
 class LoginForm extends React.Component {
@@ -46,6 +46,7 @@ class LoginForm extends React.Component {
 
 	onSubmit(e) {
 		e.preventDefault();
+
 		if(this.isValid()) {
 			this.setState({ errors: {}, isLoading:true });
 			this.props.login(this.state).then(
