@@ -21,12 +21,41 @@ class SignupForm extends React.Component {
 			passwordConfirmation:'qw',
 			timezone:'',
 			errors:{},
-			isLoading: false
+			isLoading: false,
+			isInvalid: false
 		}
 
 		this.onChange = this.onChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
+		this.checkUserExist = this.checkUserExist.bind(this);
+		
 
+	}
+
+	checkUserExist(e) {
+		const field = e.target.name;
+		const val= e.target.value;
+
+		if(val !== '') {
+			this.props.isUserExists(val).then(res => {
+				let errors = this.state.errors;
+				let invalid;
+				if (res.data.user) {
+					errors[field] = ' There is user with such ' + field;
+					invalid = true;
+				} else {
+					errors[field] = '';
+					invalid = false;
+				}
+
+				this.setState({
+					errors,
+					isInvalid: invalid
+				})
+			})
+		}
+
+		
 	}
 
 	onChange(e) {
@@ -95,7 +124,8 @@ class SignupForm extends React.Component {
 						error = { errors.username }
 						label="Username"
 						value={this.state.username}						
-						onChange={this.onChange}					 
+						onChange={this.onChange}
+						checkUserExist = {this.checkUserExist}						 
 					 	field="username"
 				/>			  	
 				
@@ -103,7 +133,8 @@ class SignupForm extends React.Component {
 						error = { errors.email }
 						label="Email"
 						value={this.state.email}						
-						onChange={this.onChange}					 
+						onChange={this.onChange}
+						checkUserExist = {this.checkUserExist}					 
 					 	field="email"
 				/>	
 				<TextFieldGroup
@@ -135,7 +166,7 @@ class SignupForm extends React.Component {
 					{ errors.timezone && <span className="help-block">{ errors.timezone }</span>}
 				</div>
 				<div className="form-group">
-					<button disabled={this.state.isLoading} className="btn btn-primary btn-lg" >
+					<button disabled={this.state.isLoading || this.state.isInvalid} className="btn btn-primary btn-lg" >
 						Sign up
 					</button>
 				</div>
@@ -146,7 +177,8 @@ class SignupForm extends React.Component {
 
 SignupForm.propTypes = {
 	userSignupRequest: React.PropTypes.func.isRequired,
-	addFlashMessage : React.PropTypes.func.isRequired
+	addFlashMessage : React.PropTypes.func.isRequired,
+	isUserExists : React.PropTypes.func.isRequired
 }
 
 //context router 

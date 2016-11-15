@@ -1,7 +1,6 @@
 import express from 'express';
 import commonValidations from '../shared/validations/signup';
 import bcrypt from 'bcryptjs';
-/*Bad approach returning 2 promises import Promise from 'bluebird';*/
 import isEmpty from 'lodash/isEmpty';
 
 import User from '../models/user';
@@ -33,28 +32,17 @@ function validateInput(data, otherValidations) {
 			}
  })
 
- /* Bad approach returning 2 promises
-	return Promise.all([
-		User.where({ email:data.email}).fetch().then(user => {
-				if (user) { errors.email = 'There is user with such email'}
-			}),
-		User.where({ username:data.username}).fetch().then(user => {
-				if (user) { errors.username = 'There is user with such username'}
-			})
-		]).then(() => {
-			return {
-				errors,
-				isValide: isEmpty(errors)
-			}
-		})
-		*/
-	
-
-
-
-	
 }
-//commonValidations
+
+router.get('/:identifier', (req, res) => {
+  User.query({
+    select: [ 'username', 'email' ],
+    where: { email: req.params.identifier },
+    orWhere: { username: req.params.identifier }
+  }).fetch().then(user => {
+    res.json({ user });
+  });
+});
 
 router.post('/', (req,res) => {
 
