@@ -19,7 +19,7 @@ class SignupForm extends React.Component {
 			email:'re@er.fr',
 			password:'qw',
 			passwordConfirmation:'qw',
-			timeZone:'',
+			timezone:'',
 			errors:{},
 			isLoading: false
 		}
@@ -122,17 +122,17 @@ class SignupForm extends React.Component {
 						onChange={this.onChange}					 
 					 	field="passwordConfirmation"
 				/>
-				<div className={classnames("form-group", { 'has-error': errors.timeZone })}>
+				<div className={classnames("form-group", { 'has-error': errors.timezone })}>
 					<label className="control-label">Timezone</label>
 					<select 
-						value={this.state.timeZone}						
+						value={this.state.timezone}						
 						onChange={this.onChange}
-					 	name="timeZone"
+					 	name="timezone"
 					  	className="form-control">
 					  	<option value="" disabled> Choose Your TimeZone</option>
 					  	{options}
 					</select>
-					{ errors.timeZone && <span className="help-block">{ errors.timeZone }</span>}
+					{ errors.timezone && <span className="help-block">{ errors.timezone }</span>}
 				</div>
 				<div className="form-group">
 					<button disabled={this.state.isLoading} className="btn btn-primary btn-lg" >
