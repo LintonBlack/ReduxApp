@@ -20,6 +20,12 @@ export default (req,res,next) => {
 					error: 'Failed to authenticate'
 				})
 			} else {
+				//Other solution 
+				/*
+					req.userId = decoded.id;
+					next();	
+				*/
+				// Better even if request to database 
 				User.query({
 					where : { id: decoded.id },
 					select: ['email', 'id', 'username']

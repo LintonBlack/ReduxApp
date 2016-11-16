@@ -28,7 +28,7 @@ function validateInput(data, otherValidations) {
  	//then return errors
  	return {
 				errors,
-				isValide: isEmpty(errors)
+				isValid: isEmpty(errors)
 			}
  })
 
@@ -46,7 +46,7 @@ router.get('/:identifier', (req, res) => {
 
 router.post('/', (req,res) => {
 
-	validateInput(req.body, commonValidations).then(({ errors, isValid}) => {
+	validateInput(req.body, commonValidations).then(({ errors, isValid}) => {	
 		if (isValid) {
 		      const { username, password, timezone, email } = req.body;
 		      const password_digest = bcrypt.hashSync(password, 10);

@@ -31,9 +31,11 @@ export default {
 	},
 	resolve: {
 		extensions: ['', '.js']
-	},
+	}
+	/* was used to fixe jsonwebtoken
+	,
 	node: {
 		net: 'empty',
 		dns: 'empty'
-	}
+	}*/
 }
